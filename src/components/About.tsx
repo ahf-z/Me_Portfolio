@@ -1,9 +1,8 @@
-
 import { useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Code, Briefcase, Star, User } from 'lucide-react';
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs';
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);

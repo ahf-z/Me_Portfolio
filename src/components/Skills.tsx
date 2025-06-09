@@ -1,9 +1,8 @@
-
 import { useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs';
 
 const Skills = () => {
   const sectionRef = useRef<HTMLElement>(null);
