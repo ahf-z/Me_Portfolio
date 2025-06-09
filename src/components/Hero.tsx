@@ -1,7 +1,8 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
-import anime from 'animejs';
+import anime from 'animejs/lib/anime.es.js';
 
 const Hero = () => {
   const [currentRole, setCurrentRole] = useState(0);
