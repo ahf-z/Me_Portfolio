@@ -1,16 +1,10 @@
 
-import { useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, Projector } from 'lucide-react';
-import anime from 'animejs/lib/anime.es.js';
 
 const Projects = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-
   const projects = [
     {
       title: "GrantWise",
@@ -50,109 +44,10 @@ const Projects = () => {
     }
   ];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Title animation
-            anime({
-              targets: titleRef.current,
-              translateY: [50, 0],
-              opacity: [0, 1],
-              duration: 800,
-              easing: 'easeOutExpo'
-            });
-
-            // Project cards animation
-            setTimeout(() => {
-              anime({
-                targets: '.project-card',
-                translateY: [60, 0],
-                opacity: [0, 1],
-                scale: [0.8, 1],
-                duration: 800,
-                delay: anime.stagger(200),
-                easing: 'easeOutElastic(1, .8)'
-              });
-            }, 300);
-
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const handleCardHover = (e: React.MouseEvent) => {
-    const card = e.currentTarget;
-    const image = card.querySelector('.project-image');
-    
-    anime({
-      targets: card,
-      translateY: -15,
-      scale: 1.03,
-      duration: 400,
-      easing: 'easeOutCubic'
-    });
-
-    anime({
-      targets: image,
-      scale: 1.1,
-      duration: 600,
-      easing: 'easeOutCubic'
-    });
-  };
-
-  const handleCardLeave = (e: React.MouseEvent) => {
-    const card = e.currentTarget;
-    const image = card.querySelector('.project-image');
-    
-    anime({
-      targets: card,
-      translateY: 0,
-      scale: 1,
-      duration: 400,
-      easing: 'easeOutCubic'
-    });
-
-    anime({
-      targets: image,
-      scale: 1,
-      duration: 600,
-      easing: 'easeOutCubic'
-    });
-  };
-
-  const handleButtonHover = (e: React.MouseEvent) => {
-    anime({
-      targets: e.currentTarget,
-      scale: 1.05,
-      duration: 200,
-      easing: 'easeOutCubic'
-    });
-  };
-
-  const handleButtonLeave = (e: React.MouseEvent) => {
-    anime({
-      targets: e.currentTarget,
-      scale: 1,
-      duration: 200,
-      easing: 'easeOutCubic'
-    });
-  };
-
   return (
-    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8" ref={sectionRef}>
+    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div ref={titleRef} className="text-center mb-16 opacity-0">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text font-poppins">
             Featured Projects
           </h2>
@@ -161,21 +56,19 @@ const Projects = () => {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <Card
               key={index}
-              className={`overflow-hidden glass-effect hover:shadow-xl transition-all duration-300 project-card opacity-0 ${
+              className={`overflow-hidden glass-effect hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${
                 project.featured ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
-              onMouseEnter={handleCardHover}
-              onMouseLeave={handleCardLeave}
             >
               <div className="relative overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-48 object-cover project-image"
+                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                 />
                 {project.featured && (
                   <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">
@@ -211,8 +104,6 @@ const Projects = () => {
                     size="sm"
                     asChild
                     className="glass-effect hover:bg-accent/50"
-                    onMouseEnter={handleButtonHover}
-                    onMouseLeave={handleButtonLeave}
                   >
                     <a href={project.github} target="_blank" rel="noopener noreferrer">
                       <Github className="h-4 w-4 mr-2" />
@@ -224,8 +115,6 @@ const Projects = () => {
                     size="sm"
                     asChild
                     className="bg-primary hover:bg-primary/90"
-                    onMouseEnter={handleButtonHover}
-                    onMouseLeave={handleButtonLeave}
                   >
                     <a href={project.demo} target="_blank" rel="noopener noreferrer">
                       <Projector className="h-4 w-4 mr-2" />
