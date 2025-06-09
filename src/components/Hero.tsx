@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 import MagneticButton from './MagneticButton';
 
 const Hero = () => {

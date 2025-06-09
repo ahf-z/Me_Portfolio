@@ -1,6 +1,5 @@
-
 import { useRef, useEffect, ReactNode } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 interface MagneticButtonProps {
   children: ReactNode;

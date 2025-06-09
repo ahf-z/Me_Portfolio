@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 import { Code, Database, Cloud, Smartphone, Globe, Cpu } from 'lucide-react';
 
 const FloatingElements = () => {

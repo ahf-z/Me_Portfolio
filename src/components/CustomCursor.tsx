@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 const CustomCursor = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });

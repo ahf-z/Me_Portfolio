@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 const ScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);

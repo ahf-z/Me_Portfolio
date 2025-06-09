@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink, Eye } from 'lucide-react';
 import { useEffect } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 import MagneticButton from './MagneticButton';
 
 const Projects = () => {
