@@ -1,50 +1,42 @@
+
 import { useEffect, useRef } from 'react';
-import * as anime from 'animejs';
+import { motion } from 'framer-motion';
 
 const ParticleBackground = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
-    const particleCount = 50;
-
-    // Create particles
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle absolute w-1 h-1 bg-primary/20 rounded-full';
-      
-      // Random initial position
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.top = Math.random() * 100 + '%';
-      
-      container.appendChild(particle);
-
-      // Animate particle
-      anime({
-        targets: particle,
-        translateX: () => anime.random(-200, 200),
-        translateY: () => anime.random(-200, 200),
-        scale: () => anime.random(0.1, 1),
-        opacity: () => anime.random(0.1, 0.8),
-        duration: () => anime.random(3000, 8000),
-        easing: 'easeInOutSine',
-        loop: true,
-        direction: 'alternate'
-      });
-    }
-
-    return () => {
-      container.innerHTML = '';
-    };
-  }, []);
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 4 + 1,
+  }));
 
   return (
-    <div 
-      ref={containerRef}
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
-    />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute bg-primary/20 rounded-full"
+          style={{
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            width: particle.size,
+            height: particle.size,
+          }}
+          animate={{
+            x: [0, Math.random() * 200 - 100, 0],
+            y: [0, Math.random() * 200 - 100, 0],
+            scale: [0.1, Math.random() * 0.9 + 0.1, 0.1],
+            opacity: [0.1, Math.random() * 0.7 + 0.1, 0.1],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: Math.random() * 2,
+          }}
+        />
+      ))}
+    </div>
   );
 };
 

@@ -1,37 +1,23 @@
+
 import { useEffect, useState } from 'react';
-import * as anime from 'animejs';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [cursorText, setCursorText] = useState('');
 
-  useEffect(() => {
-    const cursor = document.querySelector('.custom-cursor');
-    const cursorFollower = document.querySelector('.cursor-follower');
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const springConfig = { damping: 25, stiffness: 700 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
 
+  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
-      
-      if (cursor) {
-        anime({
-          targets: cursor,
-          left: e.clientX,
-          top: e.clientY,
-          duration: 0,
-          easing: 'linear'
-        });
-      }
-
-      if (cursorFollower) {
-        anime({
-          targets: cursorFollower,
-          left: e.clientX,
-          top: e.clientY,
-          duration: 300,
-          easing: 'easeOutCubic'
-        });
-      }
+      cursorX.set(e.clientX - 8);
+      cursorY.set(e.clientY - 8);
     };
 
     const handleMouseEnter = (e: Event) => {
@@ -57,40 +43,47 @@ const CustomCursor = () => {
       document.removeEventListener('mouseenter', handleMouseEnter, true);
       document.removeEventListener('mouseleave', handleMouseLeave, true);
     };
-  }, []);
+  }, [cursorX, cursorY]);
 
   return (
     <>
-      <div 
-        className={`custom-cursor fixed w-4 h-4 bg-primary rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-200 ${
-          isHovering ? 'scale-150' : 'scale-100'
-        }`}
-        style={{ 
-          left: cursorPos.x - 8, 
-          top: cursorPos.y - 8,
-          transform: `translate(-50%, -50%) scale(${isHovering ? 1.5 : 1})`
+      <motion.div 
+        className="custom-cursor fixed w-4 h-4 bg-primary rounded-full pointer-events-none z-50 mix-blend-difference"
+        style={{
+          left: cursorXSpring,
+          top: cursorYSpring,
         }}
+        animate={{
+          scale: isHovering ? 1.5 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 500, damping: 28 }}
       />
-      <div 
-        className={`cursor-follower fixed w-8 h-8 border-2 border-primary/50 rounded-full pointer-events-none z-40 transition-all duration-300 ${
-          isHovering ? 'scale-200 opacity-50' : 'scale-100 opacity-100'
-        }`}
+      <motion.div 
+        className="cursor-follower fixed w-8 h-8 border-2 border-primary/50 rounded-full pointer-events-none z-40"
         style={{ 
           left: cursorPos.x - 16, 
           top: cursorPos.y - 16,
-          transform: `translate(-50%, -50%) scale(${isHovering ? 2 : 1})`
         }}
+        animate={{
+          scale: isHovering ? 2 : 1,
+          opacity: isHovering ? 0.5 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 28 }}
       />
       {cursorText && (
-        <div 
+        <motion.div 
           className="cursor-text fixed pointer-events-none z-50 bg-primary text-primary-foreground px-2 py-1 rounded text-sm"
           style={{ 
             left: cursorPos.x + 20, 
             top: cursorPos.y - 30 
           }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ type: "spring", stiffness: 500, damping: 28 }}
         >
           {cursorText}
-        </div>
+        </motion.div>
       )}
     </>
   );
